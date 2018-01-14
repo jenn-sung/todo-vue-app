@@ -1,58 +1,37 @@
+/*global Vue, VueRouter, axios */
+
 var HomePage = {
   template: "#home-page",
   data: function() {
     return {
-      message: "Welcome to Vue.js!",
-      tasks: [
-        {
-          id: 1,
-          text: "Take out the garbage",
-          completed: true
-        },
-        {
-          id: 2,
-          text: "Make the bed",
-          completed: true
-        },
-        {
-          id: 3,
-          text: "Mow the lawn",
-          completed: false
-        },
-        {
-          id: 4,
-          text: "Buy groceries",
-          completed: false
-        }
-
-      ],
-      taskId: "",
-      taskText: "",
-      taskCompleted: ""
-
+      message: "Welcome to Tasks",
+      tasks: [],
+      newTask: {id: 1, text: "", completed: false}
+        
     };
-
-
-  
   },
-  created: function() {},
+  created: function() {
+    axios.get('/v1/tasks').then(function(response) {
+      console.log(this);
+      console.log(response.data);
+      this.tasks = response.data;
+    }.bind(this));
+  },
   methods: {
     addTask: function() {
       console.log("hey");
-      var newTask = {
-        text: this.taskText,
-        completed: this.taskCompleted
-      };
-      if (this.text !== '' || this.completed !== '') {
-        this.tasks.push(newTask);
-      }
-      
-      this.text = "";
-      this.completed = "";
+      console.log(this.newTask);
+      this.tasks.push(this.newTask);
     },
     removeTask: function(inputTask) {
-      var index = this.tasks.splice(index, 1);
-    }
+      console.log(inputTask);
+      var index = this.tasks.indexOf(inputTask);
+      console.log(index);
+      this.tasks.splice(index, 1);
+    },
+    toggleCompleted: function(inputTask) {
+      inputTask.completed = !inputTask.completed;
+    }  
   },
   computed: {}
 };
