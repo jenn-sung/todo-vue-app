@@ -18,24 +18,48 @@ var HomePage = {
   },
   methods: {
     addTask: function() {
+      console.log('adding task...');
       var params = {
-        text: this.newTask.text,
-        completed: this.newTask.completed
+        text: this.text,
+        completed: this.completed
       };
       axios.post('/v1/tasks', params).then(function(response) {
-        console.log(response.data);
         this.tasks.push(response.data);
       }.bind(this));
-    },
-    removeTask: function(inputTask) {
-      console.log(inputTask);
-      var index = this.tasks.indexOf(inputTask);
-      console.log(index);
-      this.tasks.splice(index, 1);
+
+      this.text = "";
+      this.completed = "";
     },
     toggleCompleted: function(inputTask) {
       inputTask.completed = !inputTask.completed;
-    }  
+    },
+    numberOfIncompleteTasks: function() {
+      var count = 0;
+      this.tasks.forEach(function(task) {
+        if (task.compeleted === false) {
+          count++;
+        }
+
+      })
+      return count;
+    },
+    removeCompeletedTasks: function() {
+      var incompleteTasks = [];
+      for (var i = 0; i < this.tasks.length; i++) {
+        if (!this.tasks[i].completed) {
+          incompleteTasks.push(this.tasks[i]);
+        }
+      }
+      this.tasks = incompleteTasks;
+    },
+    removeTask: function(inputTask) {
+      console.log(inputTask);
+      axios.delete('/v1/tasks/' + inputTask.id).then(function(response) {
+        console.log(response.data);
+        var index = this.tasks.indexOf(inputTask);
+        this.tasks.splice(index, 1);
+      }.bind(this))
+    }, 
   },
   computed: {}
 };

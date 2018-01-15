@@ -28,23 +28,28 @@
 <template id="home-page">
   <div class="vue-component">
 
-    <p>Number of tasks not yet completed</p>
+    <p>Number of tasks not yet completed {{ numberOfIncompleteTasks() }}</p>
 
     <h1>{{ message }}</h1>
 
     <div v-for="task in tasks">
-    
-      <h2 v-on:click="removeTask(task)">{{ task.text }}</h2>
 
-      <p v-bind:class="{strike: task.completed}">{{ task.completed }}</p>
+      <p v-bind:class="{strike: task.completed}"></p>
       
-      <button v-on:click="toggleCompleted(task)">Remove this task</button>
-  </div> 
+      <p v-on:click="toggleCompleted(task)">
+        {{ task.text }}
+        {{ task. completed }}
+        <button v-on:click="removeTask(task)">Remove the task</button>
+      </p>
+    </div> 
 
   
-    <p>Text: <input type="text" v-model="newTask.text"></p>
-    <p>Completed: <input type="text" v-model="newTask.completed"></p>
+    <p>Text: <input type="text" v-model="text"></p>
+    <p>Completed: <input type="text" v-model="completed"></p>
     <button v-on:click="addTask()">Add a task</button>
+
+
+    <button v-on:click="removeCompletedTasks()">Remove Completed Tasks!</button>
   
   </div>
 </template>
