@@ -28,9 +28,9 @@
 <template id="home-page">
   <div class="vue-component">
 
-    <h1>{{ message }}</h1>
+    <p>Number of tasks not yet completed</p>
 
-    <p>{{ tasks.length }}</p>
+    <h1>{{ message }}</h1>
 
     <div v-for="task in tasks">
     
@@ -38,7 +38,7 @@
 
       <p v-bind:class="{strike: task.completed}">{{ task.completed }}</p>
       
-      <button v-on:click="removeTask(task)">Remove this task</button>
+      <button v-on:click="toggleCompleted(task)">Remove this task</button>
   </div> 
 
   

@@ -6,22 +6,26 @@ var HomePage = {
     return {
       message: "Welcome to Tasks",
       tasks: [],
-      newTask: {id: 1, text: "", completed: false}
-        
+      text: "", 
+      completed: ""      
     };
   },
   created: function() {
     axios.get('/v1/tasks').then(function(response) {
-      console.log(this);
       console.log(response.data);
       this.tasks = response.data;
     }.bind(this));
   },
   methods: {
     addTask: function() {
-      console.log("hey");
-      console.log(this.newTask);
-      this.tasks.push(this.newTask);
+      var params = {
+        text: this.newTask.text,
+        completed: this.newTask.completed
+      };
+      axios.post('/v1/tasks', params).then(function(response) {
+        console.log(response.data);
+        this.tasks.push(response.data);
+      }.bind(this));
     },
     removeTask: function(inputTask) {
       console.log(inputTask);
